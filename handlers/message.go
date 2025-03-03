@@ -57,46 +57,9 @@ func HandleMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *sql.DB) 
 
 	case text == "Завершить заявку":
 		HandleCompleteOrder(bot, message.Chat.ID, userID, message.From.UserName, db)
-		/*if orders, ok := currentOrders.Load(userID); !ok || len(orders.([]models.Order)) == 0 {
-			msg := tgbotapi.NewMessage(message.Chat.ID, "Вы не добавили ни одного товара в заявку.")
-			bot.Send(msg)
-			return
-		}
-
-		// Сохраняем заявку
-		if orders, ok := currentOrders.Load(userID); ok {
-			err := database.SaveOrderToDatabase(bot, userID, message.From.UserName, orders.([]models.Order))
-			if err != nil {
-				log.Printf("Ошибка сохранения заказа: %v\n", err)
-				msg := tgbotapi.NewMessage(message.Chat.ID, "Произошла ошибка при сохранении заказа. Попробуйте позже.")
-				bot.Send(msg)
-				return
-			}
-		}
-
-		// Очищаем данные
-		creatingOrder.Delete(userID)
-		currentOrders.Delete(userID)
-		waitingQuantity.Delete(userID)
-
-		msg := tgbotapi.NewMessage(message.Chat.ID, "Заявка успешно сохранена!")
-		msg.ReplyMarkup = keyboards.GetStartKeyboard()
-		bot.Send(msg)*/
 
 	case text == "Отмена":
 		HandleCancelOrder(bot, message.Chat.ID, userID)
-		/*if value, ok := creatingOrder.Load(userID); ok && value.(bool) {
-			creatingOrder.Delete(userID)
-			currentOrders.Delete(userID)
-			waitingQuantity.Delete(userID)
-
-			msg := tgbotapi.NewMessage(message.Chat.ID, "Создание заявки отменено.")
-			msg.ReplyMarkup = keyboards.GetStartKeyboard()
-			bot.Send(msg)
-		} else {
-			msg := tgbotapi.NewMessage(message.Chat.ID, "Нечего отменять.")
-			bot.Send(msg)
-		}*/
 
 	case text == "/allorders" || text == "Все заказы" || text == "все заказы" || text == "все заявки" || text == "все Заявки":
 		ShowOrders(bot, message, "SELECT requests.id, requests.user_id, specialists.name as username, date, is_completed FROM requests join specialists on requests.user_id = specialists.user_id;")
